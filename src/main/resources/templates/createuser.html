@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <div th:replace="~{fragments/header :: head}"></div>
+</head>
+<body>
+
+<div th:replace="~{fragments/header :: header}"></div>
+<div th:replace="~{fragments/nav :: nav}"></div>
+
+<div style="padding: 1rem; max-width: 600px; margin: auto;">
+
+  <h2>Ajout d'un nouvel utilisateur</h2>
+
+  <form method="post" th:action="@{/saveuser}" th:object="${user}">
+    <div style="margin-bottom: 1rem;">
+      <label for="usernameInput">Nom d'utilisateur</label><br>
+      <input type="text" th:field="*{username}" id="usernameInput" placeholder="Saisir le nom d'utilisateur" style="width: 100%; padding: 0.5rem;">
+    </div>
+
+    <div style="margin-bottom: 1rem;">
+      <label for="nomInput">Nom</label><br>
+      <input type="text" th:field="*{nom}" id="nomInput" placeholder="Saisir le nom" style="width: 100%; padding: 0.5rem;">
+    </div>
+
+    <div style="margin-bottom: 1rem;">
+      <label for="prenomInput">Prénom</label><br>
+      <input type="text" th:field="*{prenom}" id="prenomInput" placeholder="Saisir le prénom" style="width: 100%; padding: 0.5rem;">
+    </div>
+
+    <div style="margin-bottom: 1rem;">
+      <label for="emailInput">Email</label><br>
+      <input type="email" th:field="*{email}" id="emailInput" placeholder="Saisir l'email" style="width: 100%; padding: 0.5rem;">
+    </div>
+
+    <div style="margin-bottom: 1rem;">
+      <label for="dateNaissanceInput">Date de naissance</label><br>
+      <input type="date" th:field="*{dateNaissance}" id="dateNaissanceInput" style="width: 100%; padding: 0.5rem;">
+    </div>
+
+    <div style="margin-bottom: 1rem;">
+      <label for="roleInput">Rôle</label><br>
+      <input type="text" th:value="'UTILISATEUR'" id="roleInput" readonly style="width: 100%; padding: 0.5rem;">
+    </div>
+
+    <div style="margin-bottom: 1rem;">
+      <label for="passwordInput">Mot de passe</label><br>
+      <input type="password" th:field="*{password}" id="passwordInput" placeholder="Saisir le mot de passe" style="width: 100%; padding: 0.5rem;" required>
+    </div>
+
+    <button type="submit" style="padding: 0.5rem 1rem; cursor: pointer;">Créer</button>
+  </form>
+
+
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+<div th:replace="~{fragments/footer :: scripts}"></div>
+
+</body>
+</html>

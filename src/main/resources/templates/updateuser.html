@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="~{fragments/header :: head}"></div>
+</head>
+<body>
+
+<div th:replace="~{fragments/header :: header}"></div>
+<div th:replace="~{fragments/nav :: nav}"></div>
+
+<div class="container">
+    <h2>Modifier un utilisateur</h2>
+    <form method="post" th:action="@{/saveuser}" th:object="${user}">
+        <input type="hidden" th:field="*{id}">
+        <div>
+            <label>Nom d'utilisateur</label>
+            <input type="text" th:field="*{username}" placeholder="Saisir le nom d'utilisateur">
+        </div>
+        <div>
+            <label>Nom</label>
+            <input type="text" th:field="*{nom}" placeholder="Saisir le nom">
+        </div>
+
+        <div>
+            <label>Prénom</label>
+            <input type="text" th:field="*{prenom}" placeholder="Saisir le prénom">
+        </div>
+
+        <div>
+            <label>Email</label>
+            <input type="email" th:field="*{email}" placeholder="Saisir l'email">
+        </div>
+
+        <div>
+            <label>Date de naissance</label>
+            <input type="date" th:field="*{dateNaissance}" placeholder="Saisir la date de naissance">
+        </div>
+
+        <div>
+            <button type="submit">Modifier</button>
+        </div>
+    </form>
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+<div th:replace="~{fragments/footer :: scripts}"></div>
+</body>
+</html>

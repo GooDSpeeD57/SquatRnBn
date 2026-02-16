@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="~{fragments/header :: head}"></div>
+</head>
+<body>
+
+<div th:replace="~{fragments/header :: header}"></div>
+<div th:replace="~{fragments/nav :: nav}"></div>
+
+<section style="padding: 1rem; max-width: 600px; margin: auto;">
+
+    <h2>Modification d'un utilisateur</h2>
+
+    <form method="post" th:action="@{/saveuser}" th:object="${user}">
+        <!-- ID caché -->
+        <input type="hidden" th:field="*{id}">
+
+        <div style="margin-bottom: 1rem;">
+            <label for="usernameInput">Nom d'utilisateur</label><br>
+            <input type="text" th:field="*{username}" id="usernameInput" style="width: 100%; padding: 0.5rem;">
+        </div>
+
+        <div style="margin-bottom: 1rem;">
+            <label for="nomInput">Nom</label><br>
+            <input type="text" th:field="*{nom}" id="nomInput" style="width: 100%; padding: 0.5rem;">
+        </div>
+
+        <div style="margin-bottom: 1rem;">
+            <label for="prenomInput">Prénom</label><br>
+            <input type="text" th:field="*{prenom}" id="prenomInput" style="width: 100%; padding: 0.5rem;">
+        </div>
+
+        <div style="margin-bottom: 1rem;">
+            <label for="emailInput">Email</label><br>
+            <input type="email" th:field="*{email}" id="emailInput" style="width: 100%; padding: 0.5rem;">
+        </div>
+
+        <div style="margin-bottom: 1rem;">
+            <label for="dateNaissanceInput">Date de naissance</label><br>
+            <input type="date"
+                   th:value="${dateNaissanceFormatted}"
+                   name="dateNaissance"
+                   id="dateNaissanceInput">
+
+        </div>
+
+        <div style="margin-bottom: 1rem;">
+            <label for="roleInput">Rôle</label><br>
+            <input type="text" th:field="*{roleName}" id="roleInput" style="width: 100%; padding: 0.5rem;">
+        </div>
+
+        <button type="submit" style="padding: 0.5rem 1rem; cursor: pointer;">Modifier</button>
+    </form>
+
+</section>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+<div th:replace="~{fragments/footer :: scripts}"></div>
+
+</body>
+</html>

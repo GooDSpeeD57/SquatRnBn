@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="~{fragments/header :: head}"></div>
+</head>
+<body>
+
+<div th:replace="~{fragments/header :: header}"></div>
+<div th:replace="~{fragments/nav :: nav}"></div>
+
+<section style="padding: 1rem; max-width: 800px; margin: auto;">
+    <h2 style="color: #c00;">Erreur</h2>
+    <table style="width: 100%; border-collapse: collapse;">
+        <tr>
+            <td style="font-weight: bold; border: 1px solid #ccc; padding: 0.5rem;">Message</td>
+            <td style="border: 1px solid #ccc; padding: 0.5rem;" th:text="${message}"></td>
+        </tr>
+        <tr>
+            <td style="font-weight: bold; border: 1px solid #ccc; padding: 0.5rem;">Code</td>
+            <td style="border: 1px solid #ccc; padding: 0.5rem;" th:text="${status}"></td>
+        </tr>
+        <tr>
+            <td style="font-weight: bold; border: 1px solid #ccc; padding: 0.5rem;">Exception</td>
+            <td style="border: 1px solid #ccc; padding: 0.5rem;" th:text="${exception}"></td>
+        </tr>
+        <tr>
+            <td style="font-weight: bold; border: 1px solid #ccc; padding: 0.5rem;">Stacktrace</td>
+            <td style="border: 1px solid #ccc; padding: 0.5rem;"><pre th:text="${trace}"></pre></td>
+        </tr>
+        <tr>
+            <td style="font-weight: bold; border: 1px solid #ccc; padding: 0.5rem;">Binding Errors</td>
+            <td style="border: 1px solid #ccc; padding: 0.5rem;" th:text="${errors}"></td>
+        </tr>
+    </table>
+</section>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+<div th:replace="~{fragments/footer :: scripts}"></div>
+
+</body>
+</html>

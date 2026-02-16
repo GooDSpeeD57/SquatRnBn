@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="~{fragments/header :: head}"></div>
+</head>
+<body>
+
+<div th:replace="~{fragments/header :: header}"></div>
+<div th:replace="~{fragments/nav :: nav}"></div>
+
+<div class="container special mt-4">
+    <h2 class="h2">Liste des utilisateurs</h2>
+    <div class="table-responsive">
+        <table class="table table-striped table-sm">
+            <thead>
+            <tr>
+
+                <th>Pseudonym</th>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Email</th>
+                <th>Date de Naissance</th>
+                <th>Role</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:if="${#lists.isEmpty(listUsers)}">
+                <td colspan="6">Aucun utilisateur en base de données</td>
+            </tr>
+            <tr th:each="user: ${listUsers}">
+                <td><span th:text="${user.username}">Username</span></td>
+                <td><span th:text="${user.nom}">Nom</span></td>
+                <td><span th:text="${user.prenom}">Prénom</span></td>
+                <td><span th:text="${user.email}">Email</span></td>
+                <td> <span th:text="${#temporals.format(user.dateNaissance, 'dd/MM/yyyy')}">Date de naissance</span></td>
+                <td><span th:text="${user.role.name}">Rôle</span></td>
+                <td>
+                    <a th:href="@{/updateuser/{id}(id=${user.id})}">
+                        <button class="btn btn-info">Modifier</button>
+                    </a>
+                    <a th:href="@{/deleteuser/{id}(id=${user.id})}">
+                        <button class="btn btn-danger">Supprimer</button>
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <h4><a th:href="@{/createuser}">Ajouter un nouvel utilisateur</a></h4>
+</div>
+
+<div th:replace="~{fragments/footer :: footer }"></div>
+<div th:replace="~{fragments/footer :: scripts}"></div>
+</body>
+</html>
