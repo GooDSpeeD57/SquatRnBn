@@ -9,6 +9,7 @@ pipeline {
     tools {
         maven 'maven'
         jdk 'JDK21'
+        allure 'Allure'
     }
 
     stages {
@@ -116,9 +117,10 @@ pipeline {
                 jdk: '',
                 properties: [],
                 reportBuildPolicy: 'ALWAYS',
-                results: [[path: 'web/target/allure-results']]
+                results: [[path: 'web/target/allure-results'],
+                         [path: 'api/target/allure-results']
+                    ]
             ])
         }
     }
-
 }
