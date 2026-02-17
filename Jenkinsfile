@@ -21,8 +21,11 @@ pipeline {
 
         stage('Git Checkout Web') {
             steps {
-                git branch: 'main',
-                    url: 'https://github.com/GooDSpeeD57/SquatRnbn.git',dir: 'web'
+                script {
+                    dir('web') {
+                git branch: 'main', url: 'https://github.com/GooDSpeeD57/SquatRnbn.git'
+                    }
+                }
             }
         }
 
@@ -51,11 +54,14 @@ pipeline {
         }
 
         stage('Git Checkout API') {
-                    steps {
-                        git branch: 'main',
-                            url: 'https://github.com/GooDSpeeD57/SquatrbNb.git',dir: 'api'
+            steps {
+                script {
+                    dir('api') {
+                        git branch: 'main', url: 'https://github.com/GooDSpeeD57/SquatrbNb.git'
                     }
                 }
+            }
+        }
 
                 stage('Build Maven API') {
                     steps {
