@@ -19,20 +19,20 @@ pipeline {
             }
         }
 
-        stage('Git Checkout') {
+        stage('Git Checkout Web') {
             steps {
                 git branch: 'main',
-                    url: 'https://github.com/GooDSpeeD57/Squatrnbn.git'
+                    url: 'https://github.com/GooDSpeeD57/SquatRnbn.git'
             }
         }
 
-        stage('Build Maven') {
+        stage('Build Maven Web') {
             steps {
                 bat 'mvn clean package'
             }
         }
 
-        stage ('Build Docker Image') {
+        stage ('Build Docker Image Web') {
             steps {
                 script {
                     docker.build('goodspeed57/webjenkins:latest','-f Dockerfile .')
@@ -40,7 +40,7 @@ pipeline {
             }
         }
 
-        stage ('Push to Docker Hub') {
+        stage ('Push to Docker Hub Web') {
             steps {
                 script {
                     docker.withRegistry('https://registry.hub.docker.com', registryCredential) {
@@ -49,6 +49,37 @@ pipeline {
                 }
             }
         }
+
+        stage('Git Checkout API') {
+                    steps {
+                        git branch: 'main',
+                            url: 'https://github.com/GooDSpeeD57/SquatrbNb.git'
+                    }
+                }
+
+                stage('Build Maven API') {
+                    steps {
+                        bat 'mvn clean package'
+                    }
+                }
+
+                stage ('Build Docker Image API') {
+                    steps {
+                        script {
+                            docker.build('goodspeed57/apijenkins:latest','-f Dockerfile .')
+                        }
+                    }
+                }
+
+                stage ('Push to Docker Hub API') {
+                    steps {
+                        script {
+                            docker.withRegistry('https://registry.hub.docker.com', registryCredential) {
+                                docker.image('goodspeed57/apijenkins:latest').push()
+                            }
+                        }
+                    }
+                }
 
         stage ('Deploy docker-compose') {
             steps {

@@ -37,7 +37,7 @@ services:
       - .env
 
   api:
-    image: goodspeed57/webjenkins:latest
+    image: goodspeed57/apijenkins:latest
     container_name: spring-api
     restart: always
     depends_on:
