@@ -22,7 +22,7 @@ pipeline {
         stage('Git Checkout Web') {
             steps {
                 git branch: 'main',
-                    url: 'https://github.com/GooDSpeeD57/SquatRnbn.git'
+                    url: 'https://github.com/GooDSpeeD57/SquatRnbn.git',dir: 'web'
             }
         }
 
@@ -53,7 +53,7 @@ pipeline {
         stage('Git Checkout API') {
                     steps {
                         git branch: 'main',
-                            url: 'https://github.com/GooDSpeeD57/SquatrbNb.git'
+                            url: 'https://github.com/GooDSpeeD57/SquatrbNb.git',dir: 'api'
                     }
                 }
 
