@@ -31,14 +31,20 @@ pipeline {
 
         stage('Build Maven Web') {
             steps {
-                bat 'mvn clean package'
+                script {
+                    dir('web') {
+                        bat 'mvn clean package'
+                    }
+                }
             }
         }
 
         stage ('Build Docker Image Web') {
             steps {
                 script {
-                    docker.build('goodspeed57/webjenkins:latest','-f Dockerfile .')
+                    dir('web') {
+                        docker.build('goodspeed57/webjenkins:latest','-f Dockerfile .')
+                    }
                 }
             }
         }
@@ -65,14 +71,20 @@ pipeline {
 
                 stage('Build Maven API') {
                     steps {
-                        bat 'mvn clean package'
+                        script {
+                            dir('api') {
+                                bat 'mvn clean package'
+                            }
+                        }
                     }
                 }
 
                 stage ('Build Docker Image API') {
                     steps {
                         script {
-                            docker.build('goodspeed57/apijenkins:latest','-f Dockerfile .')
+                            dir('api') {
+                                docker.build('goodspeed57/apijenkins:latest','-f Dockerfile .')
+                            }
                         }
                     }
                 }
@@ -90,7 +102,7 @@ pipeline {
         stage ('Deploy docker-compose') {
             steps {
                 script {
-                     bat 'docker-compose -f SquatRnbn/docker-compose.yml up -d --build --force-recreate --remove-orphans'
+                     bat 'docker-compose -f web/docker-compose.yml up -d --build --force-recreate --remove-orphans'
                 }
             }
         }
