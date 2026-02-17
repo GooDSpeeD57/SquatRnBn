@@ -84,7 +84,7 @@ pipeline {
         stage ('Deploy docker-compose') {
             steps {
                 script {
-                    bat 'docker-compose up -d --build --force-recreate --remove-orphans'
+                     bat 'docker-compose -f SquatRnbn/docker-compose.yml up -d --build --force-recreate --remove-orphans'
                 }
             }
         }
