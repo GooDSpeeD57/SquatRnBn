@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         registry = "goodspeed57/webjenkins"
-        registryCredential = 'Github'
+        registryCredential = 'DockerHubAccount'
     }
 
     tools {
