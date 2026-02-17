@@ -104,7 +104,7 @@ pipeline {
             steps {
                 script {
                     dir('web') {
-                        bat 'docker-compose --env-file .env up -d --build --force-recreate --remove-orphans'
+                         bat 'docker-compose up -d --build --force-recreate --remove-orphans'
                     }
                 }
             }
