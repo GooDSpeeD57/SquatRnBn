@@ -41,22 +41,24 @@ pipeline {
         }
 
         stage ('Push to Docker Hub') {
-             steps {
-                script {
-                    docker.withRegistry('https://registry.hub.docker.com', registryCredential) {
-                    docker.image('goodspeed57/webjenkins:latest').push()}
-                       }
-                   }
-                }
-
-        stage ('Deploye docker-compos') {
             steps {
                 script {
-                bat 'docker-compose up -d --build --force-recreate --remove-orphans'
+                    docker.withRegistry('https://registry.hub.docker.com', registryCredential) {
+                        docker.image('goodspeed57/webjenkins:latest').push()
+                    }
                 }
-           }
+            }
         }
-}
+
+        stage ('Deploy docker-compose') {
+            steps {
+                script {
+                    bat 'docker-compose up -d --build --force-recreate --remove-orphans'
+                }
+            }
+        }
+
+    }
 
     post {
         always {
@@ -66,8 +68,8 @@ pipeline {
                 properties: [],
                 reportBuildPolicy: 'ALWAYS',
                 results: [[path: 'target/allure-results']]
-                ])
-            }
+            ])
         }
     }
 
+}
