@@ -100,15 +100,15 @@ pipeline {
                     }
                 }
 
-        stage ('Deploy docker-compose') {
+        stage('Deploy docker-compose') {
             steps {
                 script {
-                     bat 'docker-compose -f web/docker-compose.yml up -d --build --force-recreate --remove-orphans'
+                    dir('web') {
+                        bat 'docker-compose --env-file .env up -d --build --force-recreate --remove-orphans'
+                    }
                 }
             }
         }
-
-    }
 
     post {
         always {
