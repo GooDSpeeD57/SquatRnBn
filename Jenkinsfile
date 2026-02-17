@@ -2,9 +2,8 @@ pipeline {
     agent any
 
     environment {
-        registry = "webspringboot2026"
+        registry = "goodspeed57/webjenkins"
         registryCredential = 'DockerHubAccount'
-        dockerImage = ''
     }
 
     tools {
@@ -23,7 +22,7 @@ pipeline {
         stage('Git Checkout') {
             steps {
                 git branch: 'main',
-                    url: 'https://github.com/GooDSpeeD57/SquatRbNb.git'
+                    url: 'https://github.com/GooDSpeeD57/Squatrnbn.git'
             }
         }
 
@@ -36,7 +35,7 @@ pipeline {
         stage ('Build Docker Image') {
             steps {
                 script {
-                    docker.build('webspringboot2025:latest','-f Dockerfile .')
+                    docker.build('goodspeed57/webjenkins:latest','-f Dockerfile .')
                 }
             }
         }
@@ -44,8 +43,8 @@ pipeline {
         stage ('Push to Docker Hub') {
              steps {
                 script {
-                    docker.withRegistry('', registryCredential) {
-                    docker.image('webspringboot2025:latest').push()}
+                    docker.withRegistry('https://registry.hub.docker.com', registryCredential) {
+                    docker.image('goodspeed57/webjenkins:latest').push()}
                        }
                    }
                 }
@@ -57,6 +56,7 @@ pipeline {
                 }
            }
         }
+}
 
     post {
         always {
