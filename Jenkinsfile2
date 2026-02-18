@@ -1,8 +1,7 @@
 pipeline {
-    agent any
+    agent none
 
     environment {
-        registry = "goodspeed57/webjenkins"
         registryCredential = 'DockerHubAccount'
     }
 
@@ -14,9 +13,22 @@ pipeline {
 
     stages {
 
-        stage('Clean Workspace') {
+        stage('Detect Changes') {
+            agent { label 'master' }
             steps {
-                cleanWs()
+                script {
+                    checkout scm
+                    env.WEB_CHANGED = bat(
+                        script: 'git diff HEAD~1 --name-only | findstr /B "web/" | find /c /v ""',
+                        returnStdout: true
+                    ).trim()
+                    env.API_CHANGED = bat(
+                        script: 'git diff HEAD~1 --name-only | findstr /B "api/" | find /c /v ""',
+                        returnStdout: true
+                    ).trim()
+                    echo "Web changed: ${env.WEB_CHANGED}"
+                    echo "API changed: ${env.API_CHANGED}"
+                }
             }
         }
 
@@ -24,8 +36,12 @@ pipeline {
             parallel {
 
                 stage('Web') {
+                    agent { label 'agent-web' }
+                    when {
+                        expression { env.WEB_CHANGED != '0' }
+                    }
                     stages {
-                        stage('Git Checkout Web') {
+                        stage('Git Web') {
                             steps {
                                 dir('web') {
                                     git branch: 'main', url: 'https://github.com/GooDSpeeD57/SquatRnbn.git'
@@ -59,8 +75,12 @@ pipeline {
                 }
 
                 stage('API') {
+                    agent { label 'agent-api' }
+                    when {
+                        expression { env.API_CHANGED != '0' }
+                    }
                     stages {
-                        stage('Git Checkout API') {
+                        stage('Git API') {
                             steps {
                                 dir('api') {
                                     git branch: 'main', url: 'https://github.com/GooDSpeeD57/SquatrbNb.git'
@@ -96,7 +116,11 @@ pipeline {
             }
         }
 
-        stage('Deploy docker-compose') {
+        stage('Deploy') {
+            agent { label 'master' }
+            when {
+                expression { env.WEB_CHANGED != '0' || env.API_CHANGED != '0' }
+            }
             steps {
                 dir('web') {
                     bat 'docker-compose down -v'
