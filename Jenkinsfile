@@ -41,8 +41,10 @@ pipeline {
                         }
                         stage('Build Docker Web') {
                             steps {
-                                dir('web') {
-                                    docker.build('goodspeed57/webjenkins:1.0', '-f Dockerfile .')
+                                script {
+                                    dir('web') {
+                                        docker.build('goodspeed57/webjenkins:1.0', '-f Dockerfile .')
+                                    }
                                 }
                             }
                         }
@@ -76,8 +78,10 @@ pipeline {
                         }
                         stage('Build Docker API') {
                             steps {
-                                dir('api') {
-                                    docker.build('goodspeed57/apijenkins:1.0', '-f Dockerfile .')
+                                script {
+                                    dir('api') {
+                                        docker.build('goodspeed57/apijenkins:1.0', '-f Dockerfile .')
+                                    }
                                 }
                             }
                         }
