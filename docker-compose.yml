@@ -35,7 +35,7 @@ services:
 
 
   api:
-    image: goodspeed57/apijenkins:latest
+    image: goodspeed57/apijenkins:1.0
     container_name: spring-api
     restart: always
     depends_on:
@@ -50,7 +50,7 @@ services:
 
 
   web:
-    image: goodspeed57/webjenkins:latest
+    image: goodspeed57/webjenkins:1.0
     container_name: spring-web
     restart: always
     depends_on:
