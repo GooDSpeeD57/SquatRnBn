@@ -44,7 +44,7 @@ pipeline {
             steps {
                 script {
                     dir('web') {
-                        docker.build('goodspeed57/webjenkins:latest','-f Dockerfile .')
+                        docker.build('goodspeed57/webjenkins:1.0','-f Dockerfile .')
                     }
                 }
             }
@@ -54,7 +54,7 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('https://registry.hub.docker.com', registryCredential) {
-                        docker.image('goodspeed57/webjenkins:latest').push()
+                        docker.image('goodspeed57/webjenkins:1.0').push()
                     }
                 }
             }
@@ -84,7 +84,7 @@ pipeline {
                     steps {
                         script {
                             dir('api') {
-                                docker.build('goodspeed57/apijenkins:latest','-f Dockerfile .')
+                                docker.build('goodspeed57/apijenkins:1.0','-f Dockerfile .')
                             }
                         }
                     }
@@ -94,7 +94,7 @@ pipeline {
                     steps {
                         script {
                             docker.withRegistry('https://registry.hub.docker.com', registryCredential) {
-                                docker.image('goodspeed57/apijenkins:latest').push()
+                                docker.image('goodspeed57/apijenkins:1.0').push()
                             }
                         }
                     }
