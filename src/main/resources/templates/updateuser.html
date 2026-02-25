@@ -33,7 +33,10 @@
 
         <div>
             <label>Date de naissance</label>
-            <input type="date" th:field="*{dateNaissance}" placeholder="Saisir la date de naissance">
+            <input type="date"
+                   th:value="${user.dateNaissance != null ? #temporals.format(user.dateNaissance, 'yyyy-MM-dd') : ''}"
+                   name="dateNaissance"
+                   placeholder="Saisir la date de naissance">
         </div>
 
         <div>

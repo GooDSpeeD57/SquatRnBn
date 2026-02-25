@@ -119,8 +119,7 @@ pipeline {
                 properties: [],
                 reportBuildPolicy: 'ALWAYS',
                 results: [[path: 'web/target/allure-results'],
-                         [path: 'api/target/allure-results']
-                ]
+                         [path: 'api/target/allure-results']]
             ])
         }
     }

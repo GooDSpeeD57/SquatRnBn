@@ -19,7 +19,7 @@ public class UserRepository {
 
     public List<User> getUsers() {
         List<User> users = webClient.get()
-                .uri(property.getApiURL() + "/user")
+                .uri(property.getApiURL() + "/api/users")
                 .retrieve()
                 .bodyToFlux(User.class)
                 .collectList()
@@ -31,7 +31,7 @@ public class UserRepository {
 
     public User getUserById(Integer id) {
         return webClient.get()
-                .uri(property.getApiURL() + "/user/{id}", id)
+                .uri(property.getApiURL() + "/api/users/{id}", id)
                 .retrieve()
                 .bodyToMono(User.class)
                 .block();
@@ -39,7 +39,7 @@ public class UserRepository {
 
     public User createUser(User user) {
         User createdUser = webClient.post()
-                .uri(property.getApiURL() + "/user")
+                .uri(property.getApiURL() + "/api/users")
                 .bodyValue(user)
                 .retrieve()
                 .bodyToMono(User.class)
@@ -51,7 +51,7 @@ public class UserRepository {
 
     public User updateUser(User user) {
         User updatedUser = webClient.put()
-                .uri(property.getApiURL() + "/user/{id}", user.getId())
+                .uri(property.getApiURL() + "/api/users/{id}", user.getId())
                 .bodyValue(user)
                 .retrieve()
                 .bodyToMono(User.class)
@@ -63,7 +63,7 @@ public class UserRepository {
 
     public void deleteUser(int id) {
         webClient.delete()
-                .uri(property.getApiURL() + "/user/{id}", id)
+                .uri(property.getApiURL() + "/api/users/{id}", id)
                 .retrieve()
                 .bodyToMono(Void.class)
                 .block();

@@ -1,4 +1,5 @@
 package training.afpa.cda24060.squartrnbn.model;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -10,6 +11,7 @@ public class User {
     private String nom;
     private String prenom;
     private String email;
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateNaissance;
     private String photoPath;
     private String password;
