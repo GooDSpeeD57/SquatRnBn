@@ -203,7 +203,7 @@
     if (val.length >= 12) score++;
     if (/[A-Z]/.test(val)) score++;
     if (/[0-9]/.test(val)) score++;
-    if (/[@#$%^&+=!]/.test(val)) score++;
+    if (/[@#$%^&+=!?]/.test(val)) score++;
     const levels = [
       { pct: '20%',  color: '#C0392B', text: '🔴 Très faible' },
       { pct: '40%',  color: '#E67E22', text: '🟠 Faible' },
