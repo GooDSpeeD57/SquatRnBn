@@ -1,57 +1,136 @@
 <!DOCTYPE html>
 <html lang="fr" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <div th:replace="~{fragments/header :: head}"></div>
+  <div th:replace="~{fragments/header :: head}"></div>
 </head>
 <body>
 
 <div th:replace="~{fragments/header :: header}"></div>
 <div th:replace="~{fragments/nav :: nav}"></div>
 
-<div class="container special mt-4">
-    <h2 class="h2">Liste des utilisateurs</h2>
-    <div class="table-responsive">
-        <table class="table table-striped table-sm">
-            <thead>
-            <tr>
+<main class="wrapper">
 
-                <th>Pseudonym</th>
-                <th>Nom</th>
-                <th>Prénom</th>
-                <th>Email</th>
-                <th>Date de Naissance</th>
-                <th>Role</th>
-                <th>Actions</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:if="${#lists.isEmpty(listUsers)}">
-                <td colspan="6">Aucun utilisateur en base de données</td>
-            </tr>
-            <tr th:each="user: ${listUsers}">
-                <td><span th:text="${user.username}">Username</span></td>
-                <td><span th:text="${user.nom}">Nom</span></td>
-                <td><span th:text="${user.prenom}">Prénom</span></td>
-                <td><span th:text="${user.email}">Email</span></td>
-                <td> <span th:text="${#temporals.format(user.dateNaissance, 'dd/MM/yyyy')}">Date de naissance</span></td>
-                <td><span th:text="${user.role.name}">Rôle</span></td>
-                <td>
-                    <a th:href="@{/updateuser/{id}(id=${user.id})}">
-                        <button class="btn btn-info">Modifier</button>
-                    </a>
-                    <a th:href="@{/deleteuser/{id}(id=${user.id})}">
-                        <button class="btn btn-danger">Supprimer</button>
-                    </a>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
+  <!-- Titre + action principale -->
+  <div class="d-flex align-center justify-between mb-3">
+    <h1 class="page-title" style="margin:0;">Utilisateurs</h1>
+    <a href="/createuser" class="btn btn-primary">＋ Ajouter un utilisateur</a>
+  </div>
 
-    <h4><a th:href="@{/createuser}">Ajouter un nouvel utilisateur</a></h4>
-</div>
+  <!-- Alerte succès / erreur flash (si transmis par le contrôleur) -->
+  <div th:if="${successMsg}" class="alert alert-success mb-2">
+    <span class="alert-icon">✅</span>
+    <span th:text="${successMsg}"></span>
+  </div>
+  <div th:if="${errorMsg}" class="alert alert-danger mb-2">
+    <span class="alert-icon">⚠️</span>
+    <span th:text="${errorMsg}"></span>
+  </div>
 
-<div th:replace="~{fragments/footer :: footer }"></div>
+  <!-- Tableau -->
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+<!--          <th>#</th>-->
+          <th>Photo</th>
+          <th>Pseudonyme</th>
+          <th>Identité</th>
+          <th>Email</th>
+          <th>Date de naissance</th>
+          <th>Rôle</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <!-- État vide -->
+        <tr th:if="${#lists.isEmpty(listUsers)}">
+          <td colspan="8">
+            <div class="empty-state">
+              <div class="empty-icon">👥</div>
+              <h3>Aucun utilisateur enregistré</h3>
+              <p>Commencez par <a href="/createuser">créer un utilisateur</a>.</p>
+            </div>
+          </td>
+        </tr>
+
+        <!-- Ligne utilisateur -->
+        <tr th:each="user, stat : ${listUsers}">
+
+          <!-- ID -->
+<!--          <td style="color:var(&#45;&#45;c-muted); font-size:.8rem;" th:text="${user.id}">1</td>-->
+
+          <!-- Avatar -->
+          <td>
+            <img th:if="${user.photoPath != null and !user.photoPath.isEmpty()}"
+                 th:src="'http://localhost:8080/' + ${user.photoPath}"
+                 class="user-avatar"
+                 alt="Photo"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-flex';">
+            <div class="user-avatar-placeholder"
+                 th:text="${#strings.toUpperCase(#strings.substring(user.username,0,2))}"
+                 th:style="${user.photoPath != null and !user.photoPath.isEmpty()} ? 'display:none' : ''">
+              US
+            </div>
+          </td>
+
+          <!-- Username -->
+          <td>
+            <strong th:text="${user.username}">johndoe</strong>
+          </td>
+
+          <!-- Nom Prénom -->
+          <td>
+            <span th:text="${user.prenom + ' ' + user.nom}">John Doe</span>
+          </td>
+
+          <!-- Email -->
+          <td>
+            <a th:href="'mailto:' + ${user.email}" th:text="${user.email}">john@example.com</a>
+          </td>
+
+          <!-- Date de naissance -->
+          <td th:text="${user.dateNaissance != null ? #temporals.format(user.dateNaissance, 'dd/MM/yyyy') : '—'}">
+            01/01/1990
+          </td>
+
+          <!-- Badge rôle -->
+          <td>
+            <span th:if="${user.role != null}"
+                  th:text="${user.role.name}"
+                  th:classappend="${user.role.name == 'ADMINISTRATEUR' or user.role.name == 'MODERATION'} ? 'badge badge-admin'
+                               : (${user.role.name == 'HOTE'} ? 'badge badge-hote'
+                               : 'badge badge-user')">
+              UTILISATEUR
+            </span>
+            <span th:unless="${user.role != null}" class="badge badge-default">—</span>
+          </td>
+
+          <!-- Actions -->
+          <td>
+            <div class="actions">
+              <a th:href="@{/updateuser/{id}(id=${user.id})}" class="btn btn-outline btn-sm">✏️ Modifier</a>
+              <a th:href="@{/deleteuser/{id}(id=${user.id})}"
+                 class="btn btn-danger btn-sm"
+                 th:attr="onclick='return confirm(\'Supprimer l\'utilisateur ' + ${user.username} + ' ?\');'">
+                🗑️ Supprimer
+              </a>
+            </div>
+          </td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Compteur -->
+  <p class="text-muted mt-2" style="font-size:.8125rem;"
+     th:text="${#lists.size(listUsers)} + ' utilisateur(s) enregistré(s)'"></p>
+
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
 <div th:replace="~{fragments/footer :: scripts}"></div>
+
 </body>
 </html>

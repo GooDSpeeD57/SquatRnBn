@@ -1,18 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
-<nav th:fragment="nav" style="background-color: #333; color: white; padding: 0.5rem 1rem;">
-    <div>
-        <a href="/" style="color: white; font-weight: bold; text-decoration: none;">Système de gestion des utilisateurs</a>
-        <ul style="list-style: none; display: inline-block; margin: 0; padding: 0; margin-left: 2rem;">
-            <li style="display: inline; margin-right: 1rem;">
-                <a href="/" style="color: white; text-decoration: none;">Accueil</a>
-            </li>
-            <li style="display: inline;">
-                <a href="/createuser" style="color: white; text-decoration: none;">Ajouter un utilisateur</a>
-            </li>
-        </ul>
-    </div>
+
+<nav th:fragment="nav" class="site-nav">
+  <div class="wrapper">
+    <a th:href="@{/}">🏠 Accueil</a>
+    <a th:href="@{/createuser}" class="nav-cta">＋ Nouvel utilisateur</a>
+  </div>
 </nav>
+
 </body>
 </html>

@@ -8,54 +8,279 @@
 <div th:replace="~{fragments/header :: header}"></div>
 <div th:replace="~{fragments/nav :: nav}"></div>
 
-<div style="padding: 1rem; max-width: 600px; margin: auto;">
+<main class="wrapper">
 
-  <h2>Ajout d'un nouvel utilisateur</h2>
+  <div class="form-section">
 
-  <form method="post" th:action="@{/saveuser}" th:object="${user}">
-    <div style="margin-bottom: 1rem;">
-      <label for="usernameInput">Nom d'utilisateur</label><br>
-      <input type="text" th:field="*{username}" id="usernameInput" placeholder="Saisir le nom d'utilisateur" style="width: 100%; padding: 0.5rem;">
+    <div class="form-card">
+
+      <!-- En-tête du formulaire -->
+      <div class="form-card-header">
+        <h2>Créer un compte</h2>
+        <p>Renseignez les informations ci-dessous pour enregistrer un nouvel utilisateur.</p>
+      </div>
+
+      <div class="form-card-body">
+
+        <!-- Erreur globale de l'API (ex: email déjà utilisé) -->
+        <div th:if="${apiError}" class="alert alert-danger">
+          <span class="alert-icon">⚠️</span>
+          <span th:text="${apiError}">Une erreur est survenue.</span>
+        </div>
+
+        <form method="post"
+              th:action="@{/saveuser}"
+              th:object="${user}"
+              enctype="multipart/form-data"
+              id="createForm"
+              novalidate>
+
+          <!-- ── Photo ── -->
+          <div class="form-group full-width mb-2">
+            <label>Photo de profil</label>
+            <div class="photo-upload-area" id="uploadArea">
+              <input type="file" name="photo" id="photoInput" accept="image/*">
+              <img id="photoPreview" class="photo-preview" src="#" alt="Aperçu">
+              <span class="upload-icon" id="uploadIcon">📷</span>
+              <p><strong>Cliquer pour choisir</strong> ou glisser-déposer<br>JPG, PNG, GIF — max 5 Mo</p>
+            </div>
+          </div>
+
+          <hr class="form-divider">
+
+          <!-- ── Identité ── -->
+          <div class="form-grid">
+
+            <div class="form-group">
+              <label for="prenomInput">Prénom *</label>
+              <input type="text" th:field="*{prenom}" id="prenomInput" placeholder="Jean"
+                     th:classappend="${fieldErrors?.containsKey('prenom')} ? 'is-invalid'">
+              <span class="field-error" th:if="${fieldErrors?.containsKey('prenom')}">
+                ⚠ <span th:text="${fieldErrors['prenom']}"></span>
+              </span>
+            </div>
+
+            <div class="form-group">
+              <label for="nomInput">Nom *</label>
+              <input type="text" th:field="*{nom}" id="nomInput" placeholder="Dupont"
+                     th:classappend="${fieldErrors?.containsKey('nom')} ? 'is-invalid'">
+              <span class="field-error" th:if="${fieldErrors?.containsKey('nom')}">
+                ⚠ <span th:text="${fieldErrors['nom']}"></span>
+              </span>
+            </div>
+
+            <div class="form-group">
+              <label for="usernameInput">Pseudonyme *</label>
+              <input type="text" th:field="*{username}" id="usernameInput" placeholder="jeandupont57"
+                     th:classappend="${fieldErrors?.containsKey('username')} ? 'is-invalid'">
+              <span class="field-error" th:if="${fieldErrors?.containsKey('username')}">
+                ⚠ <span th:text="${fieldErrors['username']}"></span>
+              </span>
+            </div>
+
+            <div class="form-group">
+              <label for="dateNaissanceInput">Date de naissance *</label>
+              <input type="date" th:field="*{dateNaissance}" id="dateNaissanceInput"
+                     th:classappend="${fieldErrors?.containsKey('dateNaissance')} ? 'is-invalid'">
+              <span class="field-error" th:if="${fieldErrors?.containsKey('dateNaissance')}">
+                ⚠ <span th:text="${fieldErrors['dateNaissance']}"></span>
+              </span>
+            </div>
+
+          </div>
+
+          <hr class="form-divider">
+
+          <!-- ── Connexion ── -->
+          <div class="form-grid">
+
+            <div class="form-group full-width">
+              <label for="emailInput">Adresse e-mail *</label>
+              <input type="email" th:field="*{email}" id="emailInput" placeholder="jean.dupont@email.com"
+                     th:classappend="${fieldErrors?.containsKey('email')} ? 'is-invalid'">
+              <span class="field-error" th:if="${fieldErrors?.containsKey('email')}">
+                ⚠ <span th:text="${fieldErrors['email']}"></span>
+              </span>
+            </div>
+
+            <div class="form-group">
+              <label for="passwordInput">Mot de passe *</label>
+              <div class="input-group">
+                <input type="password" th:field="*{password}" id="passwordInput"
+                       placeholder="Min. 8 caractères"
+                       th:classappend="${fieldErrors?.containsKey('password')} ? 'is-invalid'"
+                       oninput="updateStrength(this.value)">
+                <button type="button" class="toggle-password" onclick="togglePwd('passwordInput', this)">👁</button>
+              </div>
+              <!-- Barre de force -->
+              <div class="password-strength"><div class="password-strength-bar" id="strengthBar"></div></div>
+              <span class="strength-label" id="strengthLabel">Saisissez un mot de passe</span>
+              <!-- Règles visuelles cochées en temps réel -->
+              <ul id="pwd-rules" style="margin:.5rem 0 0 0; padding:0; list-style:none; font-size:.78rem;">
+                <li id="rule-len">   ⬜ Au moins 8 caractères</li>
+                <li id="rule-upper"> ⬜ Une lettre majuscule (A-Z)</li>
+                <li id="rule-lower"> ⬜ Une lettre minuscule (a-z)</li>
+                <li id="rule-digit"> ⬜ Un chiffre (0-9)</li>
+                <li id="rule-spec">  ⬜ Un caractère spécial : @ # $ % ^ &amp; + = ! ?</li>
+              </ul>
+              <span class="field-error" th:if="${fieldErrors?.containsKey('password')}">
+                ⚠ <span th:text="${fieldErrors['password']}"></span>
+              </span>
+            </div>
+
+            <div class="form-group">
+              <label for="confirmPasswordInput">Confirmer le mot de passe *</label>
+              <div class="input-group">
+                <input type="password" id="confirmPasswordInput"
+                       placeholder="Répétez le mot de passe"
+                       oninput="checkConfirm()">
+                <button type="button" class="toggle-password" onclick="togglePwd('confirmPasswordInput', this)">👁</button>
+              </div>
+              <span class="field-error" id="confirmError" style="display:none;">
+                ⚠ Les mots de passe ne correspondent pas
+              </span>
+            </div>
+
+          </div>
+
+          <hr class="form-divider">
+
+          <!-- ── Options ── -->
+          <div class="d-flex align-center justify-between" style="flex-wrap:wrap; gap:1rem;">
+            <label class="checkbox-row">
+              <input type="checkbox" name="rememberMe" id="rememberMe">
+              <span>🔒 Rester connecté (Remember Me)</span>
+            </label>
+            <span style="font-size:.8rem; color:var(--c-muted);">* Champs obligatoires</span>
+          </div>
+
+          <hr class="form-divider">
+
+          <!-- ── Soumission ── -->
+          <div class="d-flex gap-2" style="flex-wrap:wrap;">
+            <button type="submit" class="btn btn-primary btn-lg" id="submitBtn">
+              ✅ Créer le compte
+            </button>
+            <a href="/" class="btn btn-outline btn-lg">Annuler</a>
+          </div>
+
+        </form>
+      </div>
     </div>
+  </div>
 
-    <div style="margin-bottom: 1rem;">
-      <label for="nomInput">Nom</label><br>
-      <input type="text" th:field="*{nom}" id="nomInput" placeholder="Saisir le nom" style="width: 100%; padding: 0.5rem;">
-    </div>
-
-    <div style="margin-bottom: 1rem;">
-      <label for="prenomInput">Prénom</label><br>
-      <input type="text" th:field="*{prenom}" id="prenomInput" placeholder="Saisir le prénom" style="width: 100%; padding: 0.5rem;">
-    </div>
-
-    <div style="margin-bottom: 1rem;">
-      <label for="emailInput">Email</label><br>
-      <input type="email" th:field="*{email}" id="emailInput" placeholder="Saisir l'email" style="width: 100%; padding: 0.5rem;">
-    </div>
-
-    <div style="margin-bottom: 1rem;">
-      <label for="dateNaissanceInput">Date de naissance</label><br>
-      <input type="date" th:field="*{dateNaissance}" id="dateNaissanceInput" style="width: 100%; padding: 0.5rem;">
-    </div>
-
-    <div style="margin-bottom: 1rem;">
-      <label for="roleInput">Rôle</label><br>
-      <input type="text" th:value="'UTILISATEUR'" id="roleInput" readonly style="width: 100%; padding: 0.5rem;">
-    </div>
-
-    <div style="margin-bottom: 1rem;">
-      <label for="passwordInput">Mot de passe</label><br>
-      <input type="password" th:field="*{password}" id="passwordInput" placeholder="Saisir le mot de passe" style="width: 100%; padding: 0.5rem;" required>
-    </div>
-
-    <button type="submit" style="padding: 0.5rem 1rem; cursor: pointer;">Créer</button>
-  </form>
-
-
-</div>
+</main>
 
 <div th:replace="~{fragments/footer :: footer}"></div>
-<div th:replace="~{fragments/footer :: scripts}"></div>
+
+<!-- ═══════════════════ SCRIPTS ═══════════════════ -->
+<script>
+  /* ── Aperçu photo ── */
+  document.getElementById('photoInput').addEventListener('change', function () {
+    const file = this.files[0];
+    if (!file) return;
+    if (file.size > 5 * 1024 * 1024) {
+      alert('Le fichier dépasse 5 Mo.');
+      this.value = '';
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = e => {
+      const preview = document.getElementById('photoPreview');
+      preview.src = e.target.result;
+      preview.style.display = 'block';
+      document.getElementById('uploadIcon').style.display = 'none';
+    };
+    reader.readAsDataURL(file);
+  });
+
+  /* ── Drag & drop ── */
+  const area = document.getElementById('uploadArea');
+  area.addEventListener('dragover', e => { e.preventDefault(); area.style.borderColor = 'var(--c-accent)'; });
+  area.addEventListener('dragleave', () => { area.style.borderColor = ''; });
+  area.addEventListener('drop', e => {
+    e.preventDefault();
+    area.style.borderColor = '';
+    const dt = e.dataTransfer;
+    if (dt.files.length) {
+      document.getElementById('photoInput').files = dt.files;
+      document.getElementById('photoInput').dispatchEvent(new Event('change'));
+    }
+  });
+
+  /* ── Définition des règles (sync avec le pattern API) ── */
+  const RULES = [
+    { id: 'rule-len',   test: v => v.length >= 8 },
+    { id: 'rule-upper', test: v => /[A-Z]/.test(v) },
+    { id: 'rule-lower', test: v => /[a-z]/.test(v) },
+    { id: 'rule-digit', test: v => /[0-9]/.test(v) },
+    { id: 'rule-spec',  test: v => /[@#$%^&+=!?]/.test(v) },
+  ];
+
+  /* ── Force du mot de passe + cochage des règles en temps réel ── */
+  function updateStrength(val) {
+    let score = 0;
+
+    RULES.forEach(rule => {
+      const ok = rule.test(val);
+      if (ok) score++;
+      const el = document.getElementById(rule.id);
+      if (!el) return;
+      const text = el.textContent.replace(/^[⬜✅]\s*/, '');
+      el.textContent = (ok ? '✅' : '⬜') + ' ' + text;
+      el.style.color  = ok ? '#27AE60' : '#7A7669';
+    });
+
+    const bar    = document.getElementById('strengthBar');
+    const label  = document.getElementById('strengthLabel');
+    const levels = [
+      { pct: '0%',   color: '#E2DDD6', text: 'Saisissez un mot de passe' },
+      { pct: '20%',  color: '#C0392B', text: '🔴 Très faible' },
+      { pct: '40%',  color: '#E67E22', text: '🟠 Faible' },
+      { pct: '60%',  color: '#F1C40F', text: '🟡 Moyen' },
+      { pct: '80%',  color: '#27AE60', text: '🟢 Fort' },
+      { pct: '100%', color: '#1E8449', text: '✅ Très fort' },
+    ];
+    const lvl = val.length === 0 ? levels[0] : levels[Math.min(score, 5)];
+    bar.style.width      = lvl.pct;
+    bar.style.background = lvl.color;
+    label.textContent    = lvl.text;
+    checkConfirm();
+  }
+
+  /* ── Vérification confirmation ── */
+  function checkConfirm() {
+    const pwd  = document.getElementById('passwordInput').value;
+    const conf = document.getElementById('confirmPasswordInput').value;
+    const err  = document.getElementById('confirmError');
+    if (conf.length === 0) { err.style.display = 'none'; return; }
+    err.style.display = pwd !== conf ? 'flex' : 'none';
+    document.getElementById('confirmPasswordInput').classList.toggle('is-invalid', pwd !== conf);
+    document.getElementById('confirmPasswordInput').classList.toggle('is-valid',   pwd === conf && conf.length > 0);
+  }
+
+  /* ── Toggle affichage mot de passe ── */
+  function togglePwd(inputId, btn) {
+    const input = document.getElementById(inputId);
+    const show  = input.type === 'password';
+    input.type  = show ? 'text' : 'password';
+    btn.textContent = show ? '🙈' : '👁';
+  }
+
+  /* ── Validation avant soumission ── */
+  document.getElementById('createForm').addEventListener('submit', function (e) {
+    const pwd  = document.getElementById('passwordInput').value;
+    const conf = document.getElementById('confirmPasswordInput').value;
+    if (pwd !== conf) {
+      e.preventDefault();
+      document.getElementById('confirmError').style.display = 'flex';
+      document.getElementById('confirmPasswordInput').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+    document.getElementById('submitBtn').disabled = true;
+    document.getElementById('submitBtn').textContent = '⏳ Enregistrement…';
+  });
+</script>
 
 </body>
 </html>

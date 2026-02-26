@@ -1,27 +1,29 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<footer th:fragment="footer" style="background-color: #222; color: white; padding: 1rem; margin-top: 2rem;">
+
+<footer th:fragment="footer" class="site-footer">
+  <div class="footer-inner">
     <div>
-        <p>Adresse : 102, rue du contrôle, Nancy Grand-Est</p>
-
-        <div>
-            <a href="https://www.facebook.com/gestperso" target="_blank" style="color: white; margin-right: 0.5rem;">Facebook</a>
-            <a href="https://twitter.com/gestperso" target="_blank" style="color: white; margin-right: 0.5rem;">Twitter</a>
-            <a href="https://www.linkedin.com/company/gestperso" target="_blank" style="color: white;">LinkedIn</a>
-        </div>
-
-        <p>Email : <a href="mailto:contact@gestperso.com" style="color: white;">contact@gestperso.com</a></p>
-
-        <p>&copy; 2026 SquatR-BnB. Tous droits réservés.</p>
-
-        <p class="small" style="font-size: 0.8rem;">
-            Mentions RGPD : Nous respectons la confidentialité de vos données.
-            Consultez notre <a href="/privacy" style="color: white;">politique de confidentialité</a>.
-        </p>
-
-        <p class="small" style="font-size: 0.8rem;">neojero 2026</p>
+      <div class="brand">SquatR<span>-BnB</span></div>
+      <p>102, rue du contrôle — Nancy Grand-Est</p>
+      <p>
+        <a href="mailto:contact@squatrbnb.com">contact@squatrbnb.com</a>
+        &nbsp;|&nbsp;
+        <a href="#">Mentions légales</a>
+        &nbsp;|&nbsp;
+        <a href="#">RGPD</a>
+      </p>
+      <p style="margin-top:.5rem;">&copy; 2026 SquatR-BnB. Tous droits réservés.</p>
     </div>
+    <div class="footer-links">
+      <a href="https://www.facebook.com" target="_blank" title="Facebook">📘</a>
+      <a href="https://twitter.com"      target="_blank" title="Twitter">🐦</a>
+      <a href="https://www.linkedin.com" target="_blank" title="LinkedIn">💼</a>
+    </div>
+  </div>
 </footer>
 
+<!-- Scripts (fragment vide pour compatibilité) -->
 <div th:fragment="scripts"></div>
+
 </html>

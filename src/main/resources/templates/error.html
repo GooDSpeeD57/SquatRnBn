@@ -1,38 +1,71 @@
 <!DOCTYPE html>
 <html lang="fr" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <div th:replace="~{fragments/header :: head}"></div>
+  <div th:replace="~{fragments/header :: head}"></div>
 </head>
 <body>
 
 <div th:replace="~{fragments/header :: header}"></div>
 <div th:replace="~{fragments/nav :: nav}"></div>
 
-<section style="padding: 1rem; max-width: 800px; margin: auto;">
-    <h2 style="color: #c00;">Erreur</h2>
-    <table style="width: 100%; border-collapse: collapse;">
-        <tr>
-            <td style="font-weight: bold; border: 1px solid #ccc; padding: 0.5rem;">Message</td>
-            <td style="border: 1px solid #ccc; padding: 0.5rem;" th:text="${message}"></td>
-        </tr>
-        <tr>
-            <td style="font-weight: bold; border: 1px solid #ccc; padding: 0.5rem;">Code</td>
-            <td style="border: 1px solid #ccc; padding: 0.5rem;" th:text="${status}"></td>
-        </tr>
-        <tr>
-            <td style="font-weight: bold; border: 1px solid #ccc; padding: 0.5rem;">Exception</td>
-            <td style="border: 1px solid #ccc; padding: 0.5rem;" th:text="${exception}"></td>
-        </tr>
-        <tr>
-            <td style="font-weight: bold; border: 1px solid #ccc; padding: 0.5rem;">Stacktrace</td>
-            <td style="border: 1px solid #ccc; padding: 0.5rem;"><pre th:text="${trace}"></pre></td>
-        </tr>
-        <tr>
-            <td style="font-weight: bold; border: 1px solid #ccc; padding: 0.5rem;">Binding Errors</td>
-            <td style="border: 1px solid #ccc; padding: 0.5rem;" th:text="${errors}"></td>
-        </tr>
-    </table>
-</section>
+<main class="wrapper">
+
+  <div style="max-width: 640px; margin: 3rem auto;">
+
+    <div class="form-card">
+      <div class="form-card-header" style="background: var(--c-danger);">
+        <h2 style="font-size:1.25rem;">
+          ⚠️ Erreur
+          <span th:if="${status}" th:text="'— ' + ${status}"></span>
+        </h2>
+        <p>Une erreur s'est produite lors du traitement de votre demande.</p>
+      </div>
+
+      <div class="form-card-body">
+
+        <div class="alert alert-danger" th:if="${message}">
+          <span class="alert-icon">❌</span>
+          <div>
+            <strong>Message :</strong>
+            <span th:text="${message}">Erreur inconnue</span>
+          </div>
+        </div>
+
+        <table style="width:100%; border-collapse:collapse; font-size:.875rem;">
+          <tr th:if="${status}">
+            <td style="padding:.5rem .75rem; font-weight:600; color:var(--c-muted); width:140px;">Code HTTP</td>
+            <td style="padding:.5rem .75rem;" th:text="${status}"></td>
+          </tr>
+          <tr th:if="${error}">
+            <td style="padding:.5rem .75rem; font-weight:600; color:var(--c-muted);">Type</td>
+            <td style="padding:.5rem .75rem;" th:text="${error}"></td>
+          </tr>
+          <tr th:if="${path}">
+            <td style="padding:.5rem .75rem; font-weight:600; color:var(--c-muted);">Chemin</td>
+            <td style="padding:.5rem .75rem;" th:text="${path}"></td>
+          </tr>
+        </table>
+
+        <!-- Stacktrace (dev seulement, à désactiver en prod) -->
+        <details th:if="${trace}" style="margin-top:1.25rem;">
+          <summary style="cursor:pointer; font-size:.8125rem; color:var(--c-muted);">🔍 Détails techniques</summary>
+          <pre style="margin-top:.75rem; font-size:.75rem; background:#f5f5f5; padding:1rem;
+                      border-radius:var(--radius); overflow:auto; max-height:300px;
+                      border:1px solid var(--c-border);" th:text="${trace}"></pre>
+        </details>
+
+        <hr class="form-divider">
+
+        <div class="d-flex gap-2">
+          <a href="/" class="btn btn-primary">🏠 Retour à l'accueil</a>
+          <button onclick="history.back()" class="btn btn-outline">← Page précédente</button>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</main>
 
 <div th:replace="~{fragments/footer :: footer}"></div>
 <div th:replace="~{fragments/footer :: scripts}"></div>

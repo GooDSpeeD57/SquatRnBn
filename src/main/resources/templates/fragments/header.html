@@ -1,17 +1,22 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
+<!-- ── HEAD ── -->
 <head th:fragment="head">
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:text="${title} ? ${title} : 'Gestpers Web Application'">Gestpers Web Application</title>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title th:text="${title} ?: 'SquatR-BnB'">SquatR-BnB</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+  <!-- Icônes légères via emoji ou inline SVG, pas de dépendance externe -->
 </head>
-<body>
-<header th:fragment="header" style="background-color: #222; color: white; padding: 1rem;">
-    <div>
-        <h1 style="margin: 0;">SquatR-BnB</h1>
-    </div>
+
+<!-- ── HEADER ── -->
+<header th:fragment="header" class="site-header">
+  <div class="wrapper">
+    <a href="/" class="brand">SquatR<span>-BnB</span></a>
+    <span style="color:#aaa; font-size:.8rem;">Gestion des utilisateurs</span>
+  </div>
 </header>
-</body>
+
 </html>
